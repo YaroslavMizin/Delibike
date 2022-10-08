@@ -1,26 +1,23 @@
-import React from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { reportFields } from '../utils/fields';
-import FormField from '../components/UI/FormField';
+import { reportPublicFields, reportPrivateFields } from '../utils/fields';
+import FormComp from '../components/Form';
+import { reportPublic, reportPrivate } from '../store/slices/actionCreators';
+import { useTypedSelector } from '../hooks/useStore';
 
 const Report = () => {
+
+    const { auth } = useTypedSelector(state => state.auth);
+    const { report } = useTypedSelector(state => state.form)
+
     return (
         <>
             <h3 className='text-center text-light'>Сообщение о краже</h3>
-            <Form className='w-50 mx-auto'>
-                {reportFields.map(field =>
-                    <FormField
-                        select={field.select}
-                        label={field.label}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        required={field.required}
-                        key={field.label} />
-                )}
-                <Button>Сообщить о краже</Button>
-            </Form>
+            <FormComp
+                data={report}
+                onSubmit={auth ? reportPrivate : reportPublic}
+                fields={auth? reportPrivateFields : reportPublicFields}
+                button='Сообщить о краже'
+                variant='report' />
         </>
-
     );
 };
 

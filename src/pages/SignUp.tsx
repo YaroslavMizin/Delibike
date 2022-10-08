@@ -1,23 +1,21 @@
-import React from 'react';
-import { Form, Button } from 'react-bootstrap';
 import { signUpFields } from '../utils/fields';
-import FormField from '../components/UI/FormField';
+import FormComp from '../components/Form';
+import { signUp } from '../store/slices/actionCreators';
+import { useTypedSelector } from '../hooks/useStore';
 
 const SignUp = () => {
+
+    const {singup} = useTypedSelector(state => state.form)
+
     return (
         <>
             <h3 className='text-center text-light'>Создание учетной записи</h3>
-            <Form className='w-50 mx-auto'>
-                {signUpFields.map(field =>
-                    <FormField
-                        label={field.label}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        required={field.required}
-                        key={field.label} />
-                )}
-                <Button>Зарегистрироваться</Button>
-            </Form>
+            <FormComp
+                data={singup}
+                onSubmit={signUp}
+                fields={signUpFields}
+                button='Зарегистрироваться'
+                variant='signup' />
         </>
     );
 };

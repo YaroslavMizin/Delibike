@@ -2,6 +2,7 @@ import { Carousel, Image } from 'react-bootstrap';
 import { images } from '../utils/images';
 
 const Home = () => {
+
     return (
         <>
             <h3 className='text-center text-light mb-5'>
@@ -12,7 +13,9 @@ const Home = () => {
                     <Carousel.Item
                         key={image.author}>
                         <Image className='d-block mx-auto'
-                            height='600px' src={image.url} />
+                            height='550vh'
+                            width='auto'
+                            src={image.url} />
                     </Carousel.Item>
                 )}
             </Carousel>

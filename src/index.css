@@ -19,6 +19,14 @@ footer {
   height: 60px;
 }
 
+.link {
+  
+}
+
+.link:hover {
+  color: #fff;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

@@ -1,45 +1,61 @@
-import React from 'react';
-import { useTypedDispatch, useTypedSelector } from '../hooks/useStore';
-import { useValidation } from '../hooks/useValidation';
-import Title from '../components/UI/common/Title';
+import React, { useEffect } from 'react';
 import Input from '../components/UI/common/Input';
 import Select from '../components/UI/common/Select';
-import FormFooter from '../components/UI/common/FormFooter';
-import Loader from '../components/UI/common/Loader';
-import { officerFields } from '../utils/fields';
-import { clearForm } from '../store/slices/privateFormSlice';
-import { updateOfficer, deleteOfficer, } from '../store/actionCreators';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { officersAPI } from '../API/Query';
+import { officerFields } from '../utils/fields';
+import { useTypedDispatch, useTypedSelector } from '../hooks/useStore';
+import { clearForm } from '../store/slices/privateFormSlice';
+import { deleteOfficerSuccess, updateOfficer } from '../store/actionCreators';
+import { useValidation } from '../hooks/useValidation';
+import { setSuccess } from '../store/slices/loadingSlice';
+import Loader from '../components/UI/common/Loader';
+import Title from '../components/UI/common/Title';
+import FormFooter from '../components/UI/common/FormFooter';
 import { errorData } from '../types/error';
 
-const Profile = () => {
+const Officer = () => {
+    const params = useParams();
     const dispatch = useTypedDispatch();
-    const { auth: { user }, loading: { loading }, privateForms: { officerData } } = useTypedSelector(state => state);
-    const [onChange] = useValidation('officer');
-    const { data: officerInfo, isLoading, error } = officersAPI.useFetchOneOfficerQuery(user.id);
-    const officer = officerInfo?.data;
+    const navigate = useNavigate();
+    const { data: officerInfo, refetch, error, isLoading } = officersAPI.useFetchOneOfficerQuery(params.id as string);
+    const { privateForms: { officerData }, loading: { success, loading } } = useTypedSelector(state => state);
 
+    // сотрудник
+    const officer = officerInfo?.data;
+    const [onChange] = useValidation('officer');
+
+    // хендлер для кнопки редактирования
     const edit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        await dispatch(updateOfficer(officerData, user.id));
-        dispatch(clearForm());
+        await dispatch(updateOfficer(officerData, officer?._id));
+        dispatch(clearForm())
+        refetch();
     }
 
+    // хендлер для кнопки удаления
     const remove = async () => {
-        await dispatch(deleteOfficer(officer?._id));
+        await dispatch(deleteOfficerSuccess(officer?._id));
     }
+
+    // перенаправление к списку при успешном удалении
+    useEffect(() => {
+        dispatch(clearForm());
+        if (success) {
+            navigate('/officers');
+            dispatch(setSuccess(false));
+        };
+    }, [success]);
 
     if (error) return <Title>{(error as errorData).data.message}</Title>
     return (
-        isLoading ?
-            <Loader />
+        isLoading ? <Loader />
             :
             <form
                 onSubmit={edit}
                 className={`${window.innerWidth > 1000 ? 'w-50' : 'w-75'} mx-auto`}>
-                <Title>{officer?.firstName && officer?.lastName ?
-                    officer.firstName + ' ' + officer.lastName : officer?.email}
-                </Title>
+                <Title>Сотрудник: {officer?.email}</Title>
                 <Input value={officer?._id} field={officerFields.id} />
                 <Input value={officer?.email} field={officerFields.email} />
                 <Input
@@ -68,4 +84,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default Officer;

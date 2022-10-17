@@ -1,27 +1,34 @@
-import { FC, useEffect } from 'react';
-import { Button, Form, Spinner } from 'react-bootstrap';
+import React, { FC, useEffect } from 'react';
+import { Button, Form } from 'react-bootstrap';
 import { typedDispatch } from '../store/store';
 import { useTypedDispatch, useTypedSelector } from '../hooks/useStore';
-import { useValidation } from '../hooks/useValidation';
-import { formfield } from '../utils/fields';
+import { formfield, labels } from '../utils/fields';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { setError, setSuccess } from '../store/slices/loadingSlice';
 import Input from './UI/common/Input';
 import Select from './UI/common/Select';
-import { clearForm } from '../store/slices/formSlice';
+import { clearForm } from '../store/slices/publicFormSlice';
+import Loader from './UI/common/Loader';
+import {officer} from '../types/officer';
 
 interface FormProps {
     onSubmit: (data: {}) => (dispatch: typedDispatch) => Promise<void>;
+    onChange: (value: string, label: string) => (dispatch: typedDispatch) => void;
+    onBlur?: (value: string, label: string) => void;
+    invalid?: string;
+    options?: string[];
+    officers?: officer[];
     fields: formfield[];
-    variant: string;
     button: string;
     data: {};
+    url: string;
+    dark?: boolean;
 }
 
-const FormComp: FC<FormProps> = ({ variant, button, fields, data, onSubmit }) => {
+const FormComp: FC<FormProps> = ({ button, fields, data, invalid, dark, options, officers, url, onSubmit, onChange, onBlur }) => {
 
-    const [invalid, onBlur, onChange] = useValidation(variant);
-    const { error, success, loading } = useTypedSelector(state => state.loading);
+    const { loading: {loadingError, success, loading}, auth: {auth} } = useTypedSelector(state => state);
+
     const dispatch = useTypedDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -34,7 +41,7 @@ const FormComp: FC<FormProps> = ({ variant, button, fields, data, onSubmit }) =>
     useEffect(() => {
         dispatch(setError(''));
         if (success) {
-            navigate('/');
+            auth ? navigate(url) : navigate('/');
             dispatch(clearForm());
             dispatch(setSuccess(false));
         }
@@ -43,36 +50,37 @@ const FormComp: FC<FormProps> = ({ variant, button, fields, data, onSubmit }) =>
     return (
         <form
             onSubmit={(e) => handleSubmit(e)}
-            className={`${window.innerWidth < 1000 ? 'w-75'
-                : 'w-50'} mx-auto d-flex flex-column`}>
+            className={`${window.innerWidth < 1000 ? 'w-75' : 'w-50'} mx-auto d-flex flex-column`}>
             {fields.map(field =>
-                <Form.Group
-                    key={field.label}
-                    className="mb-3">
-                    <Form.Label className='text-light'>
-                        {field.label} {field.required ? '*' : null}
-                    </Form.Label>
-                    {field.select ?
-                        <Select onChange={onChange} field={field} />
-                        :
-                        <Input onBlur={onBlur} onChange={onChange} field={field} />}
-                </Form.Group>)}
+                field.select ?
+                    <Select
+                        dark={dark}
+                        value=''
+                        options={field.label == labels.officer ? officers : options}
+                        key={field.label}
+                        onChange={onChange}
+                        field={field} />
+                    :
+                    <Input
+                        dark={dark}
+                        key={field.label}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        field={field} />
+            )}
             {invalid &&
                 <Form.Text className="text-danger">
                     {invalid}
                 </Form.Text>}
-            {error && <Form.Text className="text-danger mx-auto">
-                {error}
+            {loadingError && <Form.Text className="text-danger mx-auto">
+                {loadingError}
             </Form.Text>}
             <Button
-                className='mt-3 w-50 mx-auto'
+                className={`mt-3 ${window.innerWidth > 1000? 'w-50' : 'w-75'} mx-auto`}
                 type='submit'>
                 {button}
             </Button>
-            {loading && <Spinner
-                animation='border'
-                variant='primary'
-                className='mx-auto mt-3' />}
+            {loading && <Loader/>}
         </form>
     );
 };

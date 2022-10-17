@@ -1,39 +1,42 @@
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Button, Nav } from 'react-bootstrap';
+import { Button, Nav, Spinner } from 'react-bootstrap';
 import { publicLinks, privateLinks, publicButtons } from '../../../utils/link';
-import NavsDesk from './NavsDesk';
+import NavDesk from './NavDesk';
 import { useTypedSelector, useTypedDispatch } from '../../../hooks/useStore';
 import { logOut } from '../../../store/slices/authSlice';
 
 const NavBarDesk = memo(() => {
 
-    const { auth, user } = useTypedSelector(state => state.auth);
+    const { auth: { auth, user }, loading: { loading } } = useTypedSelector(state => state);
     const dispatch = useTypedDispatch();
 
     return (
         <>
             <Nav className='flex-grow-1'>
                 {publicLinks.map(link =>
-                    <NavsDesk
+                    <NavDesk
                         key={link.to}
                         to={link.to}
                         name={link.name} />)}
                 {auth && privateLinks.map(link =>
-                    <NavsDesk
+                    <NavDesk
                         key={link.to}
                         to={link.to}
                         name={link.name} />)}
             </Nav>
             <Nav>
-                {auth?
+                {auth ?
                     <>
-                        <LinkContainer to='/profile'>
-                            <Button className='mx-2'>{user.firstName}</Button>
-                        </LinkContainer>
+                        {loading ?
+                            <Spinner animation='border' variant='primary' className='me-3'/>
+                            :
+                            <LinkContainer to='/profile'>
+                                <Button className='mx-2'>{user.firstName || user.email}</Button>
+                            </LinkContainer>}
                         <Button
-                        onClick={() => dispatch(logOut())}
-                        className='mx-2'>Выйти</Button>
+                            onClick={() => dispatch(logOut())}
+                            className='mx-2'>Выйти</Button>
                     </>
                     :
                     <>

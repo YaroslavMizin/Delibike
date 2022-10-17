@@ -1,13 +1,15 @@
-import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { casesAPI, officersAPI } from "../API/Query";
 import authSlice from "./slices/authSlice";
-import formSlice from "./slices/formSlice";
+import publicFormSlice from "./slices/publicFormSlice";
 import loadingSlice from "./slices/loadingSlice";
+import privateFormSlice from "./slices/privateFormSlice";
 
 const rootReducer = combineReducers({
     auth: authSlice,
     loading: loadingSlice,
-    form: formSlice,
+    publicForms: publicFormSlice,
+    privateForms: privateFormSlice,
     [casesAPI.reducerPath]: casesAPI.reducer,
     [officersAPI.reducerPath]: officersAPI.reducer,
 });

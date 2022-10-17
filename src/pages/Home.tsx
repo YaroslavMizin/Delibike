@@ -1,18 +1,20 @@
+import React, {FC} from 'react';
 import { Carousel, Image } from 'react-bootstrap';
+import Title from '../components/UI/common/Title';
 import { images } from '../utils/images';
 
-const Home = () => {
+const Home: FC = () => {
 
     return (
         <>
-            <h3 className='text-center text-light mb-5'>
+            <Title>
                 Delibike - сервис по прокату велосипедов
-            </h3>
+            </Title>
             <Carousel>
                 {images.map(image =>
-                    <Carousel.Item
-                        key={image.author}>
-                        <Image className='d-block mx-auto'
+                    <Carousel.Item key={image.author}>
+                        <Image
+                            className='d-block mx-auto'
                             height='550vh'
                             width='auto'
                             src={image.url} />

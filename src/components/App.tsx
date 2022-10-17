@@ -1,27 +1,25 @@
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { BrowserRouter } from 'react-router-dom';
-import { useTypedDispatch, useTypedSelector } from '../hooks/useStore';
-import { Spinner } from 'react-bootstrap';
-import Router from './Router';
+import { useTypedDispatch } from '../hooks/useStore';
+import Router from '../router/Router';
 import Layout from './Layout';
 import { useEffect } from 'react';
-import { getAuth } from '../store/slices/actionCreators';
+import { getAuth } from '../store/actionCreators';
 
 function App() {
-  const {loading} = useTypedSelector(state => state.loading);
   const dispatch = useTypedDispatch();
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
-    dispatch(getAuth());
-  }, [])
-
+    token && dispatch(getAuth());
+  }, []);
 
   return (
     <BrowserRouter>
       <Layout>
         <Router></Router>
       </Layout>
-      {loading && <Spinner animation='border' variant='primary'/>}
     </BrowserRouter>
   );
 }

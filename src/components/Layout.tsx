@@ -1,4 +1,4 @@
-import { ReactNode, FC } from 'react';
+import React, { ReactNode, FC } from 'react';
 import { Container} from 'react-bootstrap';
 import Footer from './Footer';
 import Header from './Header';

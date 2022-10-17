@@ -1,21 +1,29 @@
-import { logInFields } from '../utils/fields';
+import React from 'react';
 import FormComp from '../components/Form';
-import { signIn } from '../store/slices/actionCreators';
+import { logInFields } from '../utils/fields';
+import { signIn } from '../store/actionCreators';
 import { useTypedSelector } from '../hooks/useStore';
+import { useValidation } from '../hooks/useValidation';
+import Title from '../components/UI/common/Title';
 
 const LogIn = () => {
 
-    const {auth} = useTypedSelector(state => state.form);
+    const [ onChange, onBlur, invalid] = useValidation('login');
+    const {auth} = useTypedSelector(state => state.publicForms);
 
     return (
         <>
-            <h3 className='text-center text-light'>Авторизация</h3>
+            <Title>Авторизация</Title>
             <FormComp
                 data={auth}
+                url='/'
+                invalid={invalid}
                 onSubmit={signIn}
+                onChange={onChange}
+                onBlur={onBlur}
                 fields={logInFields}
                 button='Войти'
-                variant='login' />
+                />
         </>
     );
 };

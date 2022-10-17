@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { casesData, robberyCaseData } from '../types/case';
-import { officersData } from '../types/officer';
+import { officersData, officerData } from '../types/officer';
 
 const token = localStorage.getItem('token');
 
@@ -13,7 +13,7 @@ export const casesAPI = createApi({
                 headers.set('authorization', token);
             }
             return headers;
-        }
+        },
     }),
     endpoints: (build) => ({
         fetchAllCases: build.query<casesData, string>({
@@ -46,7 +46,7 @@ export const officersAPI = createApi({
                 url: '/officers',
             })
         }),
-        fetchOneOfficer: build.query({
+        fetchOneOfficer: build.query<officerData, string>({
             query: (id) => ({
                 url: `/officers/${id}`
             })

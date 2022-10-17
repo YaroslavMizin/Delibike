@@ -3,11 +3,6 @@ interface link {
     to: string;
 }
 
-interface button {
-    name: string;
-    to?: string;
-}
-
 export const publicLinks: link[] = [
     {name: 'Главная', to: '/'},
     {name: 'Связаться', to: '/contact'},

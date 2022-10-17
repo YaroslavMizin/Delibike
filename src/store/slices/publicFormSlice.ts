@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { auth, signup, report } from "../../types/forms";
 
-const formSlice = createSlice({
-    name: 'form',
+// слайс общих форм
+const publicFormSlice = createSlice({
+    name: 'publicForms',
     initialState: {
         report: {} as report,
         auth: {} as auth,
@@ -62,7 +63,7 @@ const formSlice = createSlice({
     }
 });
 
-export default formSlice.reducer;
+export default publicFormSlice.reducer;
 export const {
     setReportLicense,
     setReportName,
@@ -80,4 +81,4 @@ export const {
     clearForm,
     setOfficer,
     setReportClientID,
-} = formSlice.actions;
+} = publicFormSlice.actions;

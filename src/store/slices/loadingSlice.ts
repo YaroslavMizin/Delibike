@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+// слайс загрузки, ошибок и редиректа
 const loadingSlice = createSlice({
     name: 'loading',
     initialState: {
         loading: false,
-        error: '',
+        loadingError: '',
         success: false,
     },
     reducers: {
@@ -12,7 +13,7 @@ const loadingSlice = createSlice({
             state.loading = action.payload;
         },
         setError(state, action: PayloadAction<string>) {
-            state.error = action.payload;
+            state.loadingError = action.payload;
         },
         setSuccess(state, action: PayloadAction<boolean>) {
             state.success = action.payload;

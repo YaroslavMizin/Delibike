@@ -1,8 +1,10 @@
+import React from "react";
 import { Navigate, RouteObject } from "react-router-dom";
 import Case from "../pages/Case";
 import Cases from "../pages/Cases";
 import Home from "../pages/Home";
 import LogIn from "../pages/LogIn";
+import Officer from "../pages/Officer";
 import Officers from "../pages/Officers";
 import Profile from "../pages/Profile";
 import Report from "../pages/Report";
@@ -13,7 +15,7 @@ export const publicRoutes: RouteObject[] = [
     {element: <LogIn/>, path: '/login'},
     {element: <SignUp/>, path: '/signup'},
     {element: <Report/>, path: '/contact'},
-    {element: <Navigate to='/'/>, path: '*'}
+    {element: <Navigate to='/'/>, path: '*'},
 ];
 
 export const privateRoutes: RouteObject[] = [
@@ -21,4 +23,5 @@ export const privateRoutes: RouteObject[] = [
     {element: <Case/>, path: 'cases/:id'},
     {element: <Profile/>, path: '/profile'},
     {element: <Officers/>, path: '/officers'},
+    {element: <Officer/>, path: '/officers/:id'},
 ]

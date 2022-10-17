@@ -1,6 +1,6 @@
-import { Route, Routes } from "react-router-dom";
+import React, { Route, Routes } from "react-router-dom";
 import { useTypedSelector } from "../hooks/useStore";
-import { privateRoutes, publicRoutes } from "../router/routes";
+import { privateRoutes, publicRoutes } from "./routes";
 
 const Router = () => {
 

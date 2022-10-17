@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import React, { FC, memo } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Nav, Navbar } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
@@ -10,7 +10,7 @@ interface NavMobileProps {
     name: string;
 }
 
-const NavsMobile: FC<NavMobileProps> = memo(({ to, name }) => {
+const NavMobile: FC<NavMobileProps> = memo(({ to, name }) => {
 
     const dispatch = useTypedDispatch();
     const location = useLocation();
@@ -18,7 +18,7 @@ const NavsMobile: FC<NavMobileProps> = memo(({ to, name }) => {
     return (
         <Navbar.Collapse>
             <LinkContainer
-                onClick={name == 'Выйти'? () => dispatch(logOut()) : () => {}}
+                onClick={name === 'Выйти'? () => dispatch(logOut()) : () => {}}
                 className={location.pathname == to && name !== 'Выйти'?
                     'text-light my-3'
                     :
@@ -31,4 +31,4 @@ const NavsMobile: FC<NavMobileProps> = memo(({ to, name }) => {
     );
 });
 
-export default NavsMobile;
+export default NavMobile;

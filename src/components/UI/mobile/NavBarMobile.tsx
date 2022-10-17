@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { Offcanvas, Navbar } from 'react-bootstrap';
-import { useTypedDispatch, useTypedSelector } from '../../../hooks/useStore';
+import { useTypedSelector } from '../../../hooks/useStore';
 import { publicLinks, privateLinks, publicButtons } from '../../../utils/link';
-import NavsMobile from './NavsMobile';
+import NavMobile from './NavMobile';
 
 const NavBarMobile = memo(() => {
 
@@ -25,30 +25,30 @@ const NavBarMobile = memo(() => {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     {publicLinks.map(link =>
-                        <NavsMobile
+                        <NavMobile
                             key={link.to}
                             to={link.to}
                             name={link.name} />
                     )}
                     {auth && privateLinks.map(link =>
-                        <NavsMobile
+                        <NavMobile
                             key={link.to}
                             to={link.to}
                             name={link.name} />
                     )}
                     {auth ?
                         <>
-                            <NavsMobile
+                            <NavMobile
                                 to={'/profile'}
                                 name={'Профиль'} />
-                             <NavsMobile
+                             <NavMobile
                                 to={'/'}
                                 name={'Выйти'} />
                         </>
                         :
                         <>
                             {publicButtons.map(link =>
-                                <NavsMobile
+                                <NavMobile
                                     key={link.to}
                                     to={link.to}
                                     name={link.name} />

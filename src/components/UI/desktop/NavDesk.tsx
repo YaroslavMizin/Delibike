@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import React, { FC, memo } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Button } from 'react-bootstrap'
 
@@ -7,16 +7,18 @@ interface NavDeskProps {
     name: string;
 }
 
-const NavsDesk: FC<NavDeskProps> = memo(({ to, name }) => {
+const NavDesk: FC<NavDeskProps> = memo(({ to, name }) => {
     return (
         <>
             <LinkContainer
                 className='mx-5'
                 to={to}>
-                <Button variant='dark'>{name}</Button>
+                <Button variant='dark'>
+                    {name}
+                </Button>
             </LinkContainer>
         </>
     );
 });
 
-export default NavsDesk;
+export default NavDesk;

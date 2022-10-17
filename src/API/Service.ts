@@ -10,8 +10,7 @@ export default class Service {
                 baseURL: authAPI,
                 url: url,
                 data: data,
-            }
-         );
+            });
          return response.data;
     }
     static async getAuth (token: string) {
@@ -33,6 +32,64 @@ export default class Service {
             },
             data: data
         })
+        return response.data;
+    }
+    static async putReport (data: {}, url: string, id: string | undefined, token: string) {
+        const response = await axios({
+            method: 'put',
+            baseURL: baseAPI,
+            url: url+id,
+            headers: {
+                authorization: token,
+            },
+            data: data
+        });
+        return response.data;
+    }
+    static async deleteReport (url: string, id: string | undefined, token: string) {
+        const response = await axios({
+            method: 'delete',
+            baseURL: baseAPI,
+            url: url+id,
+            headers: {
+                authorization: token,
+            }
+        })
+        return response.data;
+    }
+    static async putOfficer (data: {}, url: string, id: string | undefined, token: string) {
+        const response = await axios({
+            method: 'put',
+            baseURL: baseAPI,
+            url: url+id,
+            headers: {
+                authorization: token,
+            },
+            data: data,
+        })
+        return response.data;
+    }
+    static async deleteOfficer (url: string, id: string | undefined, token: string) {
+        const response = await axios({
+            method: 'delete',
+            baseURL: baseAPI,
+            url: url+id,
+            headers: {
+                authorization: token,
+            },
+        });
+        return response.data;
+    }
+    static async createOfficer (data: {}, url: string, token: string) {
+        const response = await axios({
+            method: 'post',
+            baseURL: baseAPI,
+            url: url,
+            headers: {
+                authorization: token,
+            },
+            data: data
+        });
         return response.data;
     }
 }
